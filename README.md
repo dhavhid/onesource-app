@@ -22,3 +22,13 @@ npm install
 npm start
 ```
 
+# Built With
+
+* [AngularJS](https://angularjs.org/): A structural framework for dynamic web apps.
+* [Node](https://nodejs.org/): Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+* [SASS](https://sass-lang.com/): Sass is the most mature, stable, and powerful professional grade CSS extension language in the world.
+* [Angular Seed](https://github.com/angular/angular-seed): An application skeleton for a typical AngularJS web app.
+
+# Author
+
+* David Martinez - Initial work - [RM Coding](https://rmcoding.com/)
