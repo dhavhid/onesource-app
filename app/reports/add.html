@@ -1,0 +1,312 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <p><br /></p>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="#/reports">OneSource Scheduling</a></li>
+                    <li><a href="#/reports">Reports</a></li>
+                    <li class="active"><strong>New</strong></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="alert alert-info" role="alert">
+                    Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <form name="reportForm" novalidate>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-pencil"></i> Headers</legend>
+                            <div class="form-group">
+                                <label class="control-label">Type <span>*</span></label>
+                                <input required type="text" readonly class="form-control input-sm" ng-model="Report.type" id="type" name="type">
+                            </div>
+                            <div class="form-group" ng-class="getFormFieldClass(reportForm.name)">
+                                <label class="control-label">Name <span>*</span></label>
+                                <input required type="text" class="form-control input-sm" ng-model="Report.name" id="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <input type="text" class="form-control input-sm" ng-model="Report.description" id="description" name="description">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" ng-model="Report.description_on_report_page" id="description_on_report_page" name="description_on_report_page">
+                                    Description on report page?
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-share"></i> Sharing</legend>
+                            <div class="form-group">
+                                <label class="control-label">Sharing Options <span>*</span></label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="Report.share_type" id="sharewithall" name="share_type" value="0"> Share with all users
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="Report.share_type" id="nosharing" name="share_type" value="-1"> No Sharing
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="Report.share_type" id="sharing" name="share_type" value="1"> Share with the following users
+                                    </label>
+                                </div>
+                                <select ng-if="Report.share_type == 1" chosen multiple ng-options="obj.id as obj.name for obj in catalogs.users" data-placeholder="select some users" ng-model="Report.access" id="access" name="access">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-columns"></i> Columns</legend>
+                            <div class="form-group">
+                                <label class="control-label">Report Columns <span>*</span></label>
+                                <p class="help-block">
+                                    Choose the columns that you want to display into your report. You can always go back to the default columns.
+                                    <strong>Drag and drop columns from left to right to pick the ones to the report.</strong>
+                                </p>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: right;">
+                                        <a href="javascript:void(0);" ng-click="restoreDefault()" class="btn btn-xs btn-default"><i class="fa fa-refresh"></i> Reset to default</a>
+                                        <br />
+                                        <div ui-sortable="sortableOptions" class="apps-container screen pull-right" style="max-height: 360px; overflow-x: auto;" ng-model="all_columns">
+                                            <div class="app" ng-repeat="field in all_columns">{{field.text}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: left;">
+                                        <a href="javascript:void(0);" ng-click="useAllColumns()" class="btn btn-xs btn-default"><i class="fa fa-check"></i> Use all columns</a>
+                                        <br />
+                                        <div ui-sortable="sortableOptions" class="apps-container screen pull-left" ng-model="Report.columns">
+                                            <div class="app" ng-repeat="field in Report.columns">{{field.text}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-filter"></i> Filters</legend>
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="filtering" id="nofiltering" name="filtering" value="0"> Show all records
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="filtering" id="yesfiltering" name="filtering" value="1"> Filter records
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="setFilters()">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">Show records where</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2 col-sm-2 col-md-2" ng-class="getFormFieldClass(reportForm.filter_match)">
+                                        <select required class="form-control input-sm" ng-model="Report.filter_match" name="filter_match" id="filter_match">
+                                            <option value=""></option>
+                                            <option value="AND">All</option>
+                                            <option value="OR">Any</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10">of these conditions are true</div>
+                                </div>
+                                <br />
+                                <div class="row" ng-repeat="filter in Report.filters" style="margin-top: 10px;">
+                                    <ng-form name="filterForm">
+                                        <div class="col-xs-12 col-sm-4 col-md-4" ng-class="getFormFieldClass(filterForm.field)">
+                                            <select required ng-options="obj.value as obj.text for obj in default_all_columns" ng-change="setConditions($index)" ng-model="Report.filters[$index].field" name="field" class="form-control input-sm">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <!-- CONDITIONS -->
+                                        <div class="col-xs-12 col-sm-4 col-md-4" ng-class="getFormFieldClass(filterForm.condition)">
+                                            <!-- DATE CONDITIONS -->
+                                            <select required ng-options="obj.value as obj.text for obj in date_conditions" ng-model="Report.filters[$index].condition" name="condition" class="form-control input-sm" ng-change="setCondValue($index)" ng-if="setConditions($index)==1">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- SELECT CONDITIONS -->
+                                            <select required ng-options="obj.value as obj.text for obj in select_conditions" ng-model="Report.filters[$index].condition" name="condition" class="form-control input-sm" ng-if="setConditions($index)==2">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- STRING CONDITIONS -->
+                                            <select required ng-options="obj.value as obj.text for obj in string_conditions" ng-model="Report.filters[$index].condition" name="condition" class="form-control input-sm" ng-if="setConditions($index)==3">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <!-- VALUES -->
+                                        <div class="col-xs-10 col-sm-3 col-md-3" ng-class="getFormFieldClass(filterForm.value)">
+                                            <!-- date or days for picking -->
+                                            <input type="text" required readonly date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" class="form-control input-sm" ng-model="Report.filters[$index].value" name="value" ng-if="DaysDate($index)==false && 1==getConditions($index)">
+                                            <select name="value" id="value" ng-model="Report.filters[$index].value" ng-if="DaysDate($index)==true && 1==getConditions($index)" class="form-control input-sm"
+                                                    ng-options="n for n in [] | range:0:29">
+                                                <option value=""></option>
+                                            </select>
+                                            <input type="text" required class="form-control input-sm" ng-if="getConditions($index)==11" ng-model="Report.filters[$index].value" name="value">
+                                            <!-- BODYPARTS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in bodyparts" data-placeholder="select some body parts" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==2" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- CLINICS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in clinics" data-placeholder="select some clinics" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==3" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- CITIES -->
+                                            <select chosen required ng-options="obj.name as obj.name for obj in cities" data-placeholder="select a city" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==12" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- DOCTORS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in doctors" data-placeholder="select some doctors" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==4" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- ATTORNEYS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in attorneys" data-placeholder="select some attorneys" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==5" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- LAWOFFICES -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in lawoffices" data-placeholder="select some lawoffices" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==6" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- CONFIRMATIONS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in confirmations" data-placeholder="select some reasons to confirm" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==7" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- CANCELATIONS -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in cancelations" data-placeholder="select some reasons to cancel" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==8" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- CREATED BY -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in createdby" data-placeholder="select some users" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==9" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- UPDATED BY -->
+                                            <select chosen multiple required ng-options="obj.id as obj.name for obj in updatedby" data-placeholder="select some users" ng-model="Report.filters[$index].value" ng-if="getConditions($index)==10" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                            <!-- PATIENT TREATING OR IS DOCTOR NPM -->
+                                            <select required ng-options="obj.value as obj.text for obj in yesno_options" data-placeholder="select an option" ng-model="Report.filters[$index].value" class="form-control input-sm" ng-if="getConditions($index)==13" name="value">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-1 col-md-1">
+                                            <button class="btn btn-danger btn-sm" title="Remove this filter" ng-click="removeFilter($index)"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                        <p><br /><hr /></p>
+                                    </ng-form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <button class="btn btn-success btn-sm" ng-click="addFilter()"><i class="fa fa-plus"></i> Add a filter</button>
+                                    </div>
+                                </div>
+                            </div> <!-- end of if filtering -->
+                        </fieldset>
+                    </div>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-sort-alpha-asc"></i> Sorting & Grouping</legend>
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="sorting" value="0"> Sort by default column &rarr; <em>Last edited date</em>.
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" ng-model="sorting" value="1"> Sort or group on other columns.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="setSorting()">
+                                <div class="row" ng-repeat="sort in Report.sort">
+                                    <ng-form name="sortingForm">
+                                        <div class="col-xs-12 col-sm-4 col-md-4" ng-class="getFormFieldClass(sortingForm.order)">
+                                            <select required ng-options="obj.value as obj.text for obj in sort_options" ng-model="Report.sort[$index].order" name="order" class="form-control input-sm">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <!-- VALUES -->
+                                        <div class="col-xs-12 col-sm-4 col-md-4" ng-class="getFormFieldClass(sortingForm.field)">
+                                            <select required ng-options="obj.value as obj.text for obj in default_all_columns" ng-model="Report.sort[$index].field" name="field" class="form-control input-sm">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-10 col-sm-3 col-md-3" ng-if="getGroupDate($index)">
+                                            <select required ng-options="item.value as item.text for item in date_grouping" ng-model="Report.sort[$index].value" class="form-control input-sm" name="sort_value">
+                                                <option value="">-- Sort and Group By --</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-1 col-md-1">
+                                            <button class="btn btn-danger btn-sm" title="Remove this sorting option" ng-click="removeSorting($index)"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                        <p><br /><br /></p>
+                                    </ng-form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <button class="btn btn-success btn-sm" ng-click="addSorting()"><i class="fa fa-plus"></i> Add a column</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class="checkbox">
+                                            <label class="control-label">
+                                                <input type="checkbox" ng-model="Report.show_summary" value="1"> Show summary table based on the grouped columns
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label class="control-label">
+                                                <input type="checkbox" ng-model="Report.hide_table" value="1"> Hide main table and show only summary table
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="well">
+                        <fieldset>
+                            <legend><i class="fa fa-cog"></i> Options</legend>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="control-label">
+                                        <input type="checkbox" ng-model="Report.allow_edit" value="1"> Allow editing records from this report
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label class="control-label">
+                                        <input type="checkbox" ng-model="Report.allow_view" value="1"> Allow viewing records from this report
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label class="control-label">
+                                        <input type="checkbox" ng-model="Report.default_report" value="1"> Make this the default report
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" ng-click="submitReport()">Save</button>
+                        <a href="#/reports" class="btn btn-default btn-sm">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

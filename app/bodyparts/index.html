@@ -1,0 +1,103 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <data-alert show-alert="alert.showAlert" alert-class="alert.alertClass" alert-message="alert.msg"></data-alert>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/bodyparts">Body Parts</a></li>
+                <li class="active"><strong>All</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" class="form-control input-sm" placeholder="Search" ng-model="q" ng-change="search()">
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <button class="btn btn-primary btn-sm pull-right" ng-click="openModal()">+ New Record</button>
+            <button class="btn btn-success btn-sm pull-right" ng-print print-element-id="printContent"><i class="fa fa-print"></i> Print</button>
+            <delete-selected collection="bodyparts"></delete-selected>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-responsive" id="printContent">
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th colspan="10">
+                            <span class="text-success">Showing results<span ng-show="checkSearch()"> for <strong>&quot;{{q}}&quot;</strong></span>: {{pagination.from | number: 0}} &mdash; {{pagination.to | number: 0}} of {{pagination.total | number: 0}}</span>
+                            <span class="text-success pull-right">Page {{pagination.current_page}} of {{pagination.last_page | number: 0}}</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th width="5%" style="text-align:center !important;"><check-all></check-all></th>
+                        <th width="5%">ID#</th>
+                        <th width="90%">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="bodypart in bodyparts">
+                        <td align="center"><input type="checkbox" class="allchks" value="{{bodypart.id}}"></td>
+                        <td>{{bodypart.id}}</td>
+                        <td><a href="javascript:void(0);" ng-click="getBodyPart(bodypart.id)"><strong>{{bodypart.name}}</strong></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="pagination.last_page > 1">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <li><a ng-click="firstPage()">First</a></li>
+                    <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                    <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                    <li><a ng-click="lastPage()">Last</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- ________________________________________________________________ -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="bodypartForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{bodypart_title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="alert alert-info" role="alert">
+                                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group input-group-sm" ng-class="getFormFieldClass(bodypartForm.name)">
+                                <label class="control-label">Name <span>*</span></label>
+                                <input type="text" required ng-model="BodyPart.name" name="name" id="name" ng-minlength="3" class="form-control">
+                                <input type="hidden" name="id" id="id" value="0" ng-value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

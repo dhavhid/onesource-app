@@ -1,0 +1,157 @@
+<div>
+    <!-- MODAL OPTIONS -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="ReportOptions">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ReportOptions">Customize this Report</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="reportOptions" method="post">
+                        <div class="row">
+                            <div class="">
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL OPTIONS -->
+    <br />
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li class="active"><strong>Referrals</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-7 col-sm-5 col-xs-12">
+                    <input type="text" class="form-control input-sm" placeholder="Search for client, attorney, clinic" ng-model="q" ng-change="search()">
+                </div>
+                <div class="col-md-5 col-sm-7 col-xs-12">
+                    <a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-wrench"></i> Customize this page</a>
+                    <a href="" class="btn btn-success btn-sm"><i class="fa fa-print"></i> Print this Report</a>
+                    <a href="#/referrals/create" class="btn btn-primary btn-sm"><i class="fa fa-user-plus"></i> New Referral</a>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <strong>Date of referral</strong> is <strong>from</strong> {{data.dor_mindate | date: 'MM/dd/yy'}} <strong>to</strong> {{data.dor_maxdate | date: 'MM/dd/yy'}}
+                    <span class="label label-info">OR</span> <strong>Appt. Date</strong> is <strong>from</strong> {{data.appt_mindate | date: 'MM/dd/yy'}} <strong>to</strong> {{data.appt_maxdate | date: 'MM/dd/yy'}}
+                    <span ng-show="hasLawOffices()"><br /><span class="label label-info">AND</span> <strong>Law Offices</strong> in ({{selected_lawoffices}})</span>
+                    <span ng-show="hasAttorneys()"><br /><span class="label label-info">AND</span> <strong>Attorneys</strong> in ({{selected_attorneys}})</span>
+                    <span ng-if="data.status == 'cancelled' || data.status == 'confirmed'"><br /><span class="label label-info">AND</span> <strong>Appointments are</strong> {{data.status | uppercase}}</span>
+                    <br />
+                    <br />
+                    <p><span class="label label-info">Newly added</span> <span class="label label-warning">Recently edited</span> <span class="label label-success">Appointment confirmed</span> <span class="label label-danger">Appointment cancelled</span></p>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th colspan="10">
+                                    <span class="text-success">Showing results<span ng-show="checkSearch()"> for <strong>&quot;{{q}}&quot;</strong></span>: {{pagination.from | number: 0}} &mdash; {{pagination.to | number: 0}} of {{pagination.total | number: 0}}</span>
+                                    <span class="text-success pull-right">Page {{pagination.current_page}} of {{pagination.last_page | number: 0}}</span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th width="5%">ID#</th>
+                                <th width="10%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('date_of_referral')">
+                                        Date of Referral
+                                        <i ng-show="data.sortBy == 'date_of_referral' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'date_of_referral' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="10%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('firstname')">
+                                        Firstname
+                                        <i ng-show="data.sortBy == 'firstname' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'firstname' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="10%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('lastname')">
+                                        Lastname
+                                        <i ng-show="data.sortBy == 'lastname' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'lastname' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="5%">D.O.B</th>
+                                <th width="30%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('clinic_name')">
+                                        Clinic
+                                        <i ng-show="data.sortBy == 'clinic_name' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'clinic_name' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="15%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('doctor_name')">
+                                        Dr. Scheduled with
+                                        <i ng-show="data.sortBy == 'doctor_name' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'doctor_name' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="5%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('appt_date')">
+                                        Appt. Date
+                                        <i ng-show="data.sortBy == 'appt_date' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'appt_date' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                                <th width="10%">
+                                    <a href="javascript:void(0);" ng-click="setOrder('attorney_name')">
+                                        Attorney
+                                        <i ng-show="data.sortBy == 'attorney_name' && data.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                                        <i ng-show="data.sortBy == 'attorney_name' && data.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="client in clients">
+                                <td ng-class="isNewRecord(client)">{{client.id}}</td>
+                                <td>{{client.date_of_referral | date: 'MM-dd-yy'}}</td>
+                                <td><a href="#/referrals/{{client.id}}"><strong>{{client.firstname}}</strong></a></td>
+                                <td><a href="#/referrals/{{client.id}}"><strong>{{client.lastname}}</strong></a></td>
+                                <td>{{client.dob | date: 'MM-dd-yy'}}</td>
+                                <td><strong>{{client.clinic_name}}</strong>, {{client.clinic_address1}}, {{client.clinic_city}}</td>
+                                <td>{{client.doctor_name}}</td>
+                                <td>{{client.appt_date | date: 'MM-dd-yy'}}</td>
+                                <td>{{client.attorney_name}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="pagination.has_more_pages">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <nav>
+                        <ul class="pagination pagination-sm">
+                            <li><a ng-click="firstPage()">First</a></li>
+                            <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                            <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                            <li><a ng-click="lastPage()">Last</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div><!-- end of main content -->
+        </div>
+    </div>
+</div>

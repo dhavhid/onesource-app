@@ -1,0 +1,77 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/doctors">Doctors</a></li>
+                <li><a href="#/doctors/{{Doctor.id}}">{{Doctor.name}}</a></li>
+                <li class="active"><strong>Edit</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-info" role="alert">
+                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+            </div>
+        </div>
+    </div>
+    <form name="doctorForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Doctor Information</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(doctorForm.name)">
+                                    <label class="control-label">Name <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Doctor.name" name="name" id="name">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(doctorForm.phone)">
+                                    <label class="control-label">Phone <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Doctor.phone" mask="(999) 999-9999" mask-restrict="reject" name="phone" id="phone">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Fax</label>
+                                    <input type="text"class="form-control input-sm" ng-model="Doctor.fax" mask="(999) 999-9999" mask-restrict="reject" name="fax" id="fax">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(doctorForm.email)">
+                                    <label class="control-label">Clinic <span>*</span></label>
+                                    <select required chosen  data-allow_single_deselect="true" data-placeholder="-- Select a Clinic --" ng-model="Doctor.requesting_office_id"
+                                            ng-options="obj.id as obj.name for obj in clinics" style="width: 100%;">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(doctorForm.email)">
+                                    <label class="control-label">Email</label>
+                                    <input type="email" class="form-control input-sm" ng-model="Doctor.email" name="email" id="email">
+                                    <p class="help-block">Formatted as username@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div> <!-- END OF REFERRALS -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                <a href="#/doctors" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

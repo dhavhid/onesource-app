@@ -1,0 +1,474 @@
+<br />
+<div class="modal fade" id="login_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Insurance Company Info</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-bind-html="Insurance.notes"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/referrals">Cases</a></li>
+                <li><a href="#/referrals/{{Referral.id}}"><strong>{{Referral.firstname}} {{Referral.lastname}}</strong></a></li>
+                <li class="active">Record Id #<strong>{{Referral.id}}</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row" ng-show="FormSaved">
+        <div class="col-md-12 col-sm-12">
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Success!</strong> {{FormSavedMessage}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-info" role="alert">
+                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+            </div>
+        </div>
+    </div>
+    <form name="clientsForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Case</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.date_of_referral)">
+                                    <label class="control-label">Date of Case <span>*</span></label>
+                                    <input type="datetime" required date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" class="form-control input-sm" ng-model="Referral.date_of_referral" name="date_of_referral" id="date_of_referral">
+                                    <p class="help-block">mm-dd-yyyy</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.date_received)">
+                                    <label class="control-label">Date Received <span>*</span></label>
+                                    <input type="text" required date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" class="form-control input-sm" ng-model="Referral.date_received" name="date_received" id="date_received">
+                                    <p class="help-block">mm-dd-yyyy</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.case_type)">
+                                    <label class="control-label">Case Type <span>*</span></label>
+                                    <select ng-model="Referral.case_type" required class="form-control" name="case_type" id="case_type">
+                                        <option value=""></option>
+                                        <option value="Personal Injury">Personal Injury</option>
+                                        <option value="Workers Compensation">Workers Compensation</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div> <!-- END OF REFERRALS -->
+        <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Client Information</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.firstname)">
+                                    <label class="control-label">First Name <span>*</span></label>
+                                    <input type="text" required ng-minlength="3" ng-model="Referral.firstname" name="firstname" id="firstname" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.lasstname)">
+                                    <label class="control-label">Last Name <span>*</span></label>
+                                    <input type="text" required ng-minlength="3" ng-model="Referral.lastname" name="lasstname" id="lastname" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">SSN</label>
+                                    <input type="text" ng-minlength="5" ng-model="Referral.ssn" mask="999-99-9999" mask-restrict="reject" name="ssn" id="ssn" class="form-control">
+                                    <p class="help-block">SSN Formatted</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.dob)">
+                                    <label class="control-label">D.O.B. <span>*</span></label>
+                                    <input type="text" required date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" ng-model="Referral.dob" name="dob" id="dob" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.phone)">
+                                    <label class="control-label">Phone Number <span>*</span></label>
+                                    <input type="text" required ng-maxlength="20" ng-model="Referral.phone" mask="(999) 999-9999" mask-restrict="reject" name="phone" id="phone" class="form-control">
+                                    <p class="help-block">(999) 999 - 9999</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Alt. Phone Number</label>
+                                    <input type="text" ng-maxlength="20" ng-model="Referral.alt_phone" mask="(999) 999-9999" mask-restrict="reject" name="alt_phone" id="alt_phone" class="form-control">
+                                    <p class="help-block">(999) 999 - 9999</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.address)">
+                                    <label class="control-label">Address <span>*</span></label>
+                                    <input type="text" required class="form-control" ng-model="Referral.address" name="address" id="address" placeholder="Street 1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <input type="text" class="form-control" ng-model="Referral.address2" name="address1" id="address1" placeholder="Street 2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--<div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.region_id)">
+                                    <label class="control-label">County <span>*</span></label>
+                                    <select chosen data-allow_single_deselect="true" data-placeholder="-- Select a Region --" ng-model="Referral.region_id" ng-change="loadCities()" required name="region_id" id="region_id" class="form-control"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.region_options" style="width: 100%;">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.city)">
+                                    <label class="control-label">City <span>*</span></label>
+                                    <input type="text" name="city" id="city" ng-model="Referral.city" class="form-control input-sm" ng-blur="loadClinics()">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.zipcode)">
+                                    <label class="control-label">Zipcode <span>*</span></label>
+                                    <input type="text" required ng-minlength="5" ng-maxlength="5" mask="99999" mask-restrict="reject" ng-model="Referral.zipcode" name="zipcode" id="zipcode" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF CLIENT INFORMATION -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Date of Injury / Body Parts</legend>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.doi)">
+                                    <label class="control-label">D.O.I. <span>*</span></label>
+                                    <input type="text" required ng-model="Referral.doi" name="doi" id="doi" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy or free format</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Other IBP</label>
+                                    <input type="text" ng-model="Referral.other_ibp" name="other_ibp" id="other_ibp" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label">Injured Body Parts</label>
+                                <input type="hidden" ng-model="Referral.body_parts" value="{{Referral.body_parts}}">
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-4" ng-repeat="bodypart in ReferralForm.bodyparts_options">
+                                <div class="checkbox">
+                                    <label ng-click="toggleSelection(bodypart.name)">
+                                        <input type="checkbox" ng-checked="selected_bodyparts.indexOf(bodypart.name) > -1" value="{{bodypart.name | uppercase}}"> {{bodypart.name}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF DOI / BODY PARTS -->
+        <div class="row" ng-show="checkPI()">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Passengers</legend>
+                        <div class="row" ng-repeat="passenger in passengers">
+                            <input type="hidden" ng-model="passengers[$index].id">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>Name</label>
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger btn-sm" ng-click="removePassenger($index)"><i class="fa fa-trash"></i></button>
+                                                </span>
+                                                <input type="text" ng-model="passengers[$index].name" name="passenger_name" id="passenger_name" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>D.O.B.</label>
+                                            <input type="text" date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" ng-model="passengers[$index].dob" name="passenger_dob" id="passenger_dob" class="form-control">
+                                            <p class="help-block">mm-dd-yyyy</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>Phone Number</label>
+                                            <input type="text" ng-model="passengers[$index].phone" mask="(999) 999-9999" mask-restrict="reject" name="passenger_phone" id="passenger_dob" class="form-control">
+                                            <p class="help-block">Formatted as (999) 999 - 9999</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>Appt. Date</label>
+                                            <input type="text" date-time view="hours" format="MM-dd-yyyy h:mm a" auto-close="true" ng-model="passengers[$index].appt_date" name="passenger_appt_date" id="passenger_appt_date" class="form-control">
+                                            <p class="help-block">mm-dd-yyyy h:m (AM/PM)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>Address</label>
+                                            <input type="text" ng-model="passengers[$index].address" name="passenger_address" id="passenger_address" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="form-group input-group-sm">
+                                            <label>IBP</label>
+                                            <input type="text" ng-model="passengers[$index].ibp" name="passenger_ibp" id="passenger_ibp" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input type="button" class="btn btn-success btn-sm" ng-click="addPassenger()" value="+ Add Passenger">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF PASSENGERS -->
+        <div class="row" ng-show="checkWC()">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Workers Compensation</legend>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Insurance Company</label>
+                                    <select chosen data-allow_single_deselect="true" data-placeholder="-- Select a Insurance Company --" ng-model="Referral.insurance_company_id" class="form-control" name="insurance_company_id" id="insurance_company_id"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.insurance_options">
+                                        <option value=""></option>
+                                    </select>
+                                    <p class="help-block"><a href="javascript:void(0);" ng-click="loadLoginInfo()"><i class="fa fa-lock"> Click here to get the IC info.</i></a></p>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Employer Name</label>
+                                    <input type="text" ng-model="Referral.employer_name" class="form-control" name="employer_name" id="employer_name">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="Referral.is_doctor_mpn"> Doctor MPN
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF WORKERS COMPENSATION INSURANCE -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Requesting Office</legend>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clientsForm.attorney_id)">
+                                    <label class="control-label">Attorney Name <span>*</span></label>
+                                    <select required data-allow_single_deselect="true" chosen data-placeholder="-- Select an Attorney --" ng-model="Referral.attorney_id" name="attorney_id" id="attorney_id" class="form-control"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.attorneys_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Requesting Office</label>
+                                    <select chosen data-allow_single_deselect="true" data-placeholder="-- Select a Law Office --" ng-model="Referral.referral_source_id" name="referral_source_id" id="referral_source_id" class="form-control"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.lawoffices_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Attorney notes</label>
+                                    <span class="help-block" ng-bind-html="Referral.attorney_notes | to_trusted" ng-if="Referral.attorney_notes.length > 0"></span>
+                                    <summernote height="100" config="summernoteoptions" ng-model="Referral.tmp_attorney_notes"></summernote>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF REFERRALS SOURCE -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Clinic Information</legend>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Clinic</label>
+                                    <select data-allow_single_deselect="true" chosen data-placeholder="-- Select a Clinic --" ng-model="Referral.clinic_id" name="clinic_id" id="clinic_id" class="form-control"
+                                            ng-options="obj.id as obj.name group by obj.OptGroup for obj in ReferralForm.clinics_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Doctor Scheduled with</label>
+                                    <select data-allow_single_deselect="true" chosen data-placeholder="-- Select a Doctor --" ng-model="Referral.doctor_id" name="doctor_id" id="doctor_id" class="form-control"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.doctors_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Appt. Scheduled with</label>
+                                    <input ng-model="Referral.scheduled_with" name="scheduled_with" id="scheduled_with" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Appt. Date</label>
+                                    <input type="text" date-time view="hours" auto-close="true" format="MM-dd-yyyy h:mm a" ng-model="Referral.appt_date" name="appt_date" id="appt_date" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy h:m (AM/PM)</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Appt. Confirmed</label>
+                                    <select chosen allow_single_deselect="true" data-placeholder="-- Select a reason --" ng-model="Referral.appt_confirmed_id" name="appt_confirmed_id" id="appt_confirmed_id" class="form-control" ng-change="setNullConCan('confirmed')"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.confirmations_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Reason for Cancel</label>
+                                    <select chosen allow_single_deselect="true" data-placeholder="-- Select a reason --" ng-model="Referral.appt_reason_cancel_id" name="reason_cancel_id" id="reason_cancel_id" class="form-control" ng-change="setNullConCan('cancelled')"
+                                            ng-options="obj.id as obj.name for obj in ReferralForm.cancelations_options">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Date Moved</label>
+                                    <input type="text" date-time view="hours" auto-close="true" format="MM-dd-yyyy h:mm a" ng-model="Referral.date_moved" name="date_moved" id="date_moved" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy h:m (AM/PM)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Clinic notes</label>
+                                    <span class="help-block" ng-bind-html="Referral.clinic_notes | to_trusted" ng-if="Referral.clinic_notes.length > 0"></span>
+                                    <summernote height="100" config="summernoteoptions" ng-model="Referral.tmp_clinic_notes"></summernote>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div><!-- END OF CLINIC INFORMATION -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Appt. Verification</legend>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Patient Treating</label>
+                                    <select chosen allow_single_deselect="true" ng-model="Referral.patient_treating" name="patient_treating" id="patient_treating" class="form-control"
+                                            ng-options="obj.value as obj.text for obj in yes_no_opts">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>First seen by Dr.</label>
+                                    <input type="text" date-time view="date" min-view="date" auto-close="true" format="MM-dd-yyyy" ng-model="Referral.first_seen" name="first_seen" id="first_seen" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Next Follow Up Appt.</label>
+                                    <input type="text" date-time view="date" auto-close="true" format="MM-dd-yyyy" ng-model="Referral.next_appt" name="next_appt" id="next_appt" class="form-control">
+                                    <p class="help-block">mm-dd-yyyy or free format</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Verified with</label>
+                                    <input type="text" ng-model="Referral.verified_with" name="verified_with" id="verified_with" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                <a href="javascript:history.back();" class="btn btn-default btn-sm">Close</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,45 @@
+<div class="row" id="printContent">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="report">
+            <table>
+                <thead>
+                <tr>
+                    <th ng-if="Report.allow_view || Report.allow_edit" width="7%"><i class="fa fa-cog"></i></th>
+                    <th ng-repeat="header in Report.columns" title="{{header.text}}" width="{{columns_width[header.value]}}">
+                        <a href="javascript:void(0);" ng-click="setOrder(header.value)" headername="{{header.value}}">
+                            {{header.text}}
+                            <i ng-show="params.sortBy == header.value && params.sortOrder == 'desc'" class="fa fa-sort-desc"></i>
+                            <i ng-show="params.sortBy == header.value && params.sortOrder == 'asc'" class="fa fa-sort-asc"></i>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="group in clients"><!-- this is for grouping -->
+                <tr class="separator" ng-if="Report.sort.length > 0">
+                    <td colspan="{{colspan}}">
+                        <i class="fa fa-caret-right"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="grouping" ng-repeat="sort_column in Report.sort">
+                                {{group[sort_column.field]}}
+                            </span> &nbsp;&nbsp;
+                        <em>({{group.data.length}} records)</em>
+                    </td>
+                </tr>
+                <tr class="tr-data" ng-repeat="record in group.data">
+                    <td ng-if="(Report.allow_view || Report.allow_edit) && record.id != null">
+                        <a ng-if="Report.allow_edit" href="#/referrals/{{record.id}}/edit" title="Edit Record"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
+                        <a ng-if="Report.allow_view" href="#/referrals/{{record.id}}" title="View Record"><i class="fa fa-eye"></i></a>
+                    </td>
+                    <td ng-repeat="column in Report.columns" ng-class="isNewRecord(record,$index)">
+                        <span ng-if="getColumnDate(column.value)">{{record[column.value] | date: 'MM-dd'}}</span>
+                        <span ng-if="getColumnDOB(column.value)">{{record[column.value] | date: 'MM-dd-yyyy'}}</span>
+                        <span ng-if="getColumnBool(column.value)">
+                            <div ng-if="record[column.value] == 1">Yes</div>
+                        </span>
+                        <span ng-if="getColumnString(column.value)">{{record[column.value]}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div><!-- end of table responsive -->
+    </div>
+</div>

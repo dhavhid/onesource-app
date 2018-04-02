@@ -1,0 +1,82 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <data-alert show-alert="alert.showAlert" alert-class="alert.alertClass" alert-message="alert.msg"></data-alert>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#">Cases</a></li>
+                <li class="active"><strong>All</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-sm-10 col-xs-8">
+            <input type="text" class="form-control input-sm" placeholder="Search" ng-model="q" ng-change="search()">
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-4">
+            <a href="#/referrals/create" class="btn btn-primary btn-sm pull-right">+ New Record</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="10">
+                                <span class="text-success">Showing results<span ng-show="checkSearch()"> for <strong>&quot;{{q}}&quot;</strong></span>: {{pagination.from | number: 0}} &mdash; {{pagination.to | number: 0}} of {{pagination.total | number: 0}}</span>
+                                <span class="text-success pull-right">Page {{pagination.current_page}} of {{pagination.last_page | number: 0}}</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="5%"></th>
+                            <th width="5%">Date of Referral</th>
+                            <th width="5%">ID#</th>
+                            <th width="10%">Firstname</th>
+                            <th width="10%">Lastname</th>
+                            <th width="5%">D.O.B</th>
+                            <th width="30%">Clinic</th>
+                            <th width="15%">Dr. Scheduled with:</th>
+                            <th width="5%">Appt. Date</th>
+                            <th width="10%">Attorney Name:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="client in clients">
+                            <td align="center">
+                                <a href="#/referrals/{{client.id}}"><i class="fa fa-eye"></i></a>
+                            </td>
+                            <td>{{client.date_of_referral | date: 'MM-dd'}}</td>
+                            <td>{{client.id}}</td>
+                            <td><a href="#/referrals/{{client.id}}"><strong>{{client.firstname}}</strong></a></td>
+                            <td><a href="#/referrals/{{client.id}}"><strong>{{client.lastname}}</strong></a></td>
+                            <td>{{client.dob | date: 'MM-dd-yyyy'}}</td>
+                            <td><strong>{{client.clinic_name}}</strong>, {{client.clinic_address1}}, {{client.clinic_city}}</td>
+                            <td>{{client.doctor_name}}</td>
+                            <td>{{client.appt_date | date: 'MM-dd-yyyy'}}</td>
+                            <td>{{client.attorney_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <li><a ng-click="firstPage()">First</a></li>
+                    <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                    <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                    <li><a ng-click="lastPage()">Last</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

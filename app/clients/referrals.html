@@ -1,0 +1,39 @@
+<br />
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <ol class="breadcrumb">
+            <li><a href="#/reports">OneSource Scheduling</a></li>
+            <li class="active">My Cases</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <input type="text" class="form-control input-sm" name="search" id="search" ng-model="q" placeholder="search..." ng-change="search()">
+    </div>
+    <!--<div class="col-xs-6 col-sm-2 col-md-2">
+        <button class="btn btn-success btn-sm pull-right" ng-print print-element-id="printContent"><i class="fa fa-print"></i> Print</button>
+    </div>-->
+</div>
+<br />
+<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        Showing page {{pagination.current_page}} out of {{pagination.last_page}}
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        <p class="pull-right"><span class="label label-info">Newly added</span> <span class="label label-warning">Recently edited</span> <span class="label label-success">Appointment confirmed</span> <span class="label label-danger">Appointment cancelled</span></p>
+    </div>
+</div>
+<table-results></table-results>
+<div class="row" ng-if="pagination.last_page > 1">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <nav>
+            <ul class="pagination pagination-sm">
+                <li><a ng-click="firstPage()">First</a></li>
+                <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                <li><a ng-click="lastPage()">Last</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

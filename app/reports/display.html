@@ -1,0 +1,167 @@
+<div class="modal fade" id="modal_columns">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Arrange Columns</h4>
+            </div>
+            <div class="modal-body">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-columns"></i> Columns</legend>
+                        <div class="form-group">
+                            <p class="help-block">
+                                Choose the columns that you want to display into your report. You can always go back to the default columns.
+                                <strong>Drag and drop columns from left to right to pick the ones to the report.</strong>
+                            </p>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: right;">
+                                    <a href="javascript:void(0);" ng-click="restoreDefault()" class="btn btn-xs btn-default"><i class="fa fa-refresh"></i> Reset to default</a>
+                                    <br />
+                                    <div ui-sortable="sortableOptions" class="apps-container screen pull-right" style="max-height: 360px; overflow-x: auto;" ng-model="all_columns">
+                                        <div class="app" ng-repeat="field in all_columns">{{field.text}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: left;">
+                                    <a href="javascript:void(0);" ng-click="useAllColumns()" class="btn btn-xs btn-default"><i class="fa fa-check"></i> Use all columns</a>
+                                    <br />
+                                    <div ui-sortable="sortableOptions" class="apps-container screen pull-left" ng-model="Report.columns">
+                                        <div class="app" ng-repeat="field in Report.columns">{{field.text}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="setColumns()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="row">
+    <div class="col-xs-9 col-sm-6 col-md-3 sidebar sidebar-left sidebar-animate">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <input type="text" class="form-control input-sm" style="border-radius: 50px;" ng-model="query" placeholder="search report">
+        </div>
+        <p><br /><br /><br /></p>
+        <h4><a href="#/reports/display/{{Reports.default.id}}">{{Reports.default.name}}</a></h4>
+        <br />
+        <h4 ng-if="Reports.my_reports.length > 0"><i class="fa fa-folder"></i> My Reports</h4>
+        <ul class="nav nav-pills nav-stacked">
+            <li ng-repeat="report in Reports.my_reports | filter:query">
+                <a href="#/reports/display/{{report.id}}">{{report.name}}</a>
+            </li>
+        </ul>
+        <div ng-if="Reports.shared_with_me.length > 0">
+            <h4><i class="fa fa-share"></i> Shared with me</h4>
+            <ul class="nav nav-pills nav-stacked">
+                <li ng-repeat="report in Reports.shared_with_me | filter:query">
+                    <a href="#/reports/display/{{report.id}}">{{report.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- End of sidebar -->
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <p><br /></p>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="#/dashboard">OneSource Scheduling</a></li>
+                    <li><a href="#/reports">Reports</a></li>
+                    <li class="active"><strong>{{Report.name}}</strong></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <span ng-if="Report.description_on_report_page && Report.description.length > 0">{{Report.description}}</span>
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-success btn-xs" data-toggle="sidebar" data-target=".sidebar">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-if="user.is_admin == 1"><a href="#/reports/{{report_id}}/edit"><i class="fa fa-wrench"></i> Customize this page</a></li>
+                        <li><a href="javascript:void(0);" ng-click="printReport()"><i class="fa fa-print"></i> Print this Report</a></a></li>
+                        <li><a href="javascript:void(0);" ng-click="getExcel()"><i class="fa fa-file-excel-o"></i> Export to Excel</a></a></li>
+                    </ul>
+                </div>
+                <p class="pull-right">&nbsp;&nbsp;</p>
+                <a href="javascript:void(0);" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#modal_columns">Add Columns</a>
+                <p ng-if="user.is_admin == 1" class="pull-right">&nbsp;&nbsp;</p>
+                <a ng-if="user.is_admin == 1" href="#/reports/create" class="btn btn-primary btn-xs pull-right">New Report</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-sm-10">
+                <input type="text" class="form-control input-sm" name="search" id="search" ng-model="q" placeholder="search..." ng-keyup="$event.keyCode == 13? search() : null;">
+            </div>
+            <div class="col-xs-12 col-md-2 col-sm-2">
+                <select class="form-control input-sm" name="search_field" id="search_field" ng-model="search_field" ng-change="search()"
+                        ng-options="obj.field as obj.label for obj in fields">
+                    <option value="">-- search by: any field --</option>
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                Showing page {{pagination.current_page}} out of {{pagination.last_page}}
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <p class="pull-right"><span class="label label-info">Newly added</span> <span class="label label-warning">Recently edited</span> <span class="label label-success">Appointment confirmed</span> <span class="label label-danger">Appointment cancelled</span></p>
+            </div>
+        </div>
+        <table-results></table-results>
+        <div class="row" ng-if="pagination.last_page > 1">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <nav>
+                    <ul class="pagination pagination-sm">
+                        <li><a ng-click="firstPage()">First</a></li>
+                        <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                        <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                        <li><a ng-click="lastPage()">Last</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <br /><br />
+        <div class="row" ng-if="Report.show_summary">
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <table class="table table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Summary</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="total in totals">
+                            <td width="90%">
+                                <span ng-repeat="item in Report.sort">
+                                    {{total[item.field]}} <em ng-if="Report.sort.length - ($index+1) >= 1">&mdash;</em>
+                                </span>
+                            </td>
+                            <td width="10%">
+                                <strong>{{total.total | number:0}}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td align="right"><strong>Total</strong></td>
+                            <td><strong>{{grand_total | number:0}}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div><!-- End of main content -->
+</div>
+<iframe src="" width="1px" height="1px" frameborder="0" id="exportframe"></iframe>

@@ -1,0 +1,88 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/users">Users</a></li>
+                <li class="active"><strong>{{User.name}}</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md12 col-sm-12 col-xs-12">
+            <a href="#/users" class="btn btn-primary btn-sm">Close</a>
+            <a href="#/users/{{User.id}}/edit" class="btn btn-warning btn-sm">Edit</a>
+            <button class="btn btn-success btn-sm" ng-print print-element-id="printContent">Print</button>
+            <button class="btn btn-danger btn-sm" ng-click="delete()">Delete</button>
+        </div>
+    </div>
+    <br />
+    <div id="printContent">
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- NAME -->
+            <tr>
+                <th colspan="3" class="header">USER INFORMATION</th>
+            </tr>
+            <tr>
+                <td colspan="3">{{User.name | uppercase}}</td>
+            </tr>
+            <tr>
+                <th colspan="3">Email</th>
+            </tr>
+            <tr>
+                <td colspan="3">{{User.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <tr>
+                <th>ACCOUNT EXPIRATION</th>
+            </tr>
+            <tr>
+                <td>
+                    <span ng-if="User.expiration">This account expires at: <strong>{{User.expiration | date: "MMM dd, yyyy"}}</strong></span>
+                    <span ng-if="!User.expiration">This account does not expires</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report" ng-if="User.is_admin == 1">
+            <tbody>
+                <tr>
+                    <td><strong>This user is admin</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report" ng-if="User.is_admin == 0">
+            <tbody>
+            <!-- LawOffice INFO -->
+            <tr>
+                <th colspan="3" class="header">ACCESS INFORMATION</th>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Access Granted</th>
+                                <th>Read Only</th>
+                                <th>Read & Write</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="rol in User.roles">
+                                <td>{{rol.name}}</td>
+                                <td><span ng-if="rol.write == 0"><i class="fa fa-check"></i></span></td>
+                                <td><span ng-if="rol.write == 1"><i class="fa fa-check"></i></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

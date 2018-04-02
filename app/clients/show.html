@@ -1,0 +1,282 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/referrals">Cases</a></li>
+                <li class="active"><strong>{{Referral.firstname}} {{Referral.lastname}}</strong></li>
+                <li class="active">Record Id #<strong>{{Referral.id}}</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md12 col-sm-12 col-xs-12">
+            <a href="javascript:history.back();" class="btn btn-primary btn-sm">Close</a>
+            <a href="#/referrals/{{Referral.id}}/edit" class="btn btn-warning btn-sm">Edit</a>
+            <button class="btn btn-success btn-sm" ng-print print-element-id="printContent">Print</button>
+            <button class="btn btn-danger btn-sm" ng-click="delete()">Delete</button>
+            <button class="btn btn-default btn-sm" ng-click="writeMail(Referral.createdby.id, Referral.createdby.name)"><i class="fa fa-envelope"></i> Email {{Referral.createdby.name}}</button>
+        </div>
+    </div>
+    <br />
+    <div id="printContent">
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- NAME -->
+                <tr>
+                    <th colspan="3" class="header">PATIENT NAME</th>
+                </tr>
+                <tr>
+                    <td colspan="3">{{Referral.firstname | uppercase}} {{Referral.lastname | uppercase}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- REFERRAL INFO -->
+                <tr>
+                    <th colspan="3" class="header">CASES</th>
+                </tr>
+                <tr>
+                    <th>Date of Case</th>
+                    <th>Received Date</th>
+                    <th>Case Type</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.date_of_referral | date: 'MMM d, yyyy'}}</td>
+                    <td>{{Referral.date_received | date: 'MMM d, yyyy'}}</td>
+                    <td>{{Referral.case_type | uppercase}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- CLIENT -->
+                <tr>
+                    <th colspan="3" class="header">CLIENT INFORMATION</th>
+                </tr>
+                <tr>
+                    <th>SSN</th>
+                    <th>D.O.B.</th>
+                    <th>Phone</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.ssn}}</td>
+                    <td>{{Referral.dob | date: 'MMM d, yyyy'}}</td>
+                    <td>{{Referral.phone}}</td>
+                </tr>
+                <tr>
+                    <th>Alt. Phone</th>
+                    <th colspan="2">Address</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.alt_phone}}</td>
+                    <td colspan="2">{{Referral.address}}, {{Referral.address2}}, {{Referral.city}}, {{Referral.region.name}}, {{Referral.zipcode}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- INJURIES -->
+                <tr>
+                    <th>D.O.I.</th>
+                    <th colspan="2">IBP</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.doi}}</td>
+                    <td colspan="2">{{Referral.body_parts}} Other Injured BP: {{Referral.other_ibp}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report" ng-show="checkPI()">
+            <tbody>
+            <!-- PASSENGERS -->
+                <tr>
+                    <th colspan="3" class="header">PASSENGERS</th>
+                </tr>
+                <tr>
+                    <td colspan="3" class="table-responsive">
+                        <table class="table table-condensed table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="20%">Name</th>
+                                <th width="10%">D.O.B.</th>
+                                <th width="10%">Phone</th>
+                                <th width="30%">Address</th>
+                                <th width="20%">IBP</th>
+                                <th width="10%">Appt. Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="passenger in passengers">
+                                <td>{{passenger.name}}</td>
+                                <td>{{passenger.dob | date: 'MMM d, yyyy'}}</td>
+                                <td>{{passenger.phone}}</td>
+                                <td>{{passenger.address}}</td>
+                                <td>{{passenger.ibp}}</td>
+                                <td>{{passenger.appt_date | date: 'MMM d, yyyy'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report" ng-show="checkWC()">
+            <tbody>
+            <!-- INSURANCE -->
+                <tr>
+                    <th colspan="3" class="header">WORKERS COMPENSATION</th>
+                </tr>
+                <tr>
+                    <th>Insurance Company</th>
+                    <th>Employer Name</th>
+                    <th>Doctor is MPN</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.insurance_company.name}}</td>
+                    <td>{{Referral.employer_name}}</td>
+                    <td><span ng-if="Referral.is_doctor_mpn == 1">Yes</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- REQUESTING OFFICE -->
+                <tr>
+                    <th colspan="3" class="header">REQUESTING OFFICE</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Requesting Office</th>
+                    <th>Attorney Name</th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div ng-if="Referral.law_office.name.length > 0">
+                            <strong>{{Referral.law_office.name}}</strong> - {{Referral.law_office.address1}}, <span ng-if="Referral.law_office.address2 != null">{{Referral.law_office.address2}},</span> {{Referral.law_office.city}}, {{Referral.law_office.zipcode}}, Phone: {{Referral.law_office.phone}}<span ng-if="Referral.law_office.fax != null">, Fax: {{Referral.law_office.fax}}</span>
+                        </div>
+                    </td>
+                    <td>{{Referral.attorney.name}}</td>
+                </tr>
+                <tr>
+                    <th colspan="3">Attorney Notes</th>
+                </tr>
+                <tr>
+                    <td colspan="3"><div ng-bind-html="Referral.attorney_notes | to_trusted"></div></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- CLINIC INFORMATION -->
+                <tr>
+                    <th colspan="4" class="header">CLINIC INFORMATION</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Name</th>
+                    <th>Doctor Scheduled with</th>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div ng-if="Referral.clinic.name.length > 0">
+                            <strong>{{Referral.clinic.name}}</strong> - {{Referral.clinic.address1}}, {{Referral.clinic.address2}}, {{Referral.clinic.city}}, {{Referral.clinic.zipcode}}, Phone: {{Referral.clinic.phone}}<span ng-if="Referral.clinic.fax != null">, Fax: {{Referral.clinic.fax}}</span>
+                        </div>
+                    </td>
+                    <td>{{Referral.doctor.name}}</td>
+                </tr>
+                <tr>
+                    <th>Appt. Scheduled with</th>
+                    <th>Appt. Date</th>
+                    <th>Appt. time</th>
+                    <th>Appt. Confirmed</th>
+                </tr>
+                <tr>
+                    <td>{{Referral.scheduled_with}}</td>
+                    <td>{{Referral.appt_date | date: 'MM/dd/yyyy'}} <span ng-if="Referral.appt_date != null">(PDT)</span></td>
+                    <td>{{Referral.appt_date | date: 'hh:mm a'}} <span ng-if="Referral.appt_date != null">(PDT)</span></td>
+                    <td>{{Referral.confirmation.name}}</td>
+                </tr>
+                <tr>
+                    <th colspan="3">Reason for cancel</th>
+                    <th>Date Moved</th>
+                </tr>
+                <tr>
+                    <td colspan="3">{{Referral.reason_for_cancel.name}}</td>
+                    <td>{{Referral.date_moved | date: 'MM/dd/yyyy hh:mm a'}} <span ng-if="Referral.date_moved != null">(PDT)</span></td>
+                </tr>
+                <tr>
+                    <th colspan="4">Clinic Notes</th>
+                </tr>
+                <tr>
+                    <td colspan="4"><div ng-bind-html="Referral.clinic_notes | to_trusted"></div></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- APPT VERIFICATION -->
+                <tr>
+                    <th colspan="3" class="header">APPT VERIFICATION</th>
+                </tr>
+                <tr>
+                    <th>Patient Treating</th>
+                    <th>First seen by Dr.</th>
+                    <th>Next Follow Up Appt.</th>
+                </tr>
+                <tr>
+                    <td>
+                        <span ng-if="Referral.patient_treating == 1">Yes</span>
+                    </td>
+                    <td>{{Referral.first_seen | date: 'MMM d, yyy'}} <span ng-if="Referral.first_seen != null">(PDT)</span></td>
+                    <td>{{Referral.next_appt}}</td>
+                </tr>
+                <tr>
+                    <th colspan="3">Verified with</th>
+                </tr>
+                <tr>
+                    <td colspan="3">{{Referral.verified_with}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+                <tr>
+                    <th class="header">
+                        Last Updated By
+                    </th>
+                </tr>
+                <tr>
+                    <td><strong>{{Referral.updatedby.name}}</strong> @ <em>{{Referral.updated_at | date: 'MM/dd/yyyy hh:mm a'}} (PDT)</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- ******************************************************************* -->
+<div class="modal fade" id="email_template">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="mailForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Email <em>{{recepient}}</em></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <summernote config="summernoteoptions" height="150" ng-model="Mail.message"></summernote>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <button type="button" id="btn_sendmail" ng-click="sendMail()" class="btn btn-primary btn-sm pull-right">Send</button>
+                            <button type="button" class="btn btn-default btn-sm pull-right" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,76 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/attorneys">Attorneys</a></li>
+                <li class="active"><strong>New Attorney</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-info" role="alert">
+                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+            </div>
+        </div>
+    </div>
+    <form name="attorneyForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Attorney Information</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(attorneyForm.name)">
+                                    <label class="control-label">Name <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Attorney.name" name="name" id="name">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(attorneyForm.phone)">
+                                    <label class="control-label">Phone <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Attorney.phone" mask="(999) 999-9999" mask-restrict="reject" name="phone" id="phone">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Fax</label>
+                                    <input type="text"class="form-control input-sm" ng-model="Attorney.fax" mask="(999) 999-9999" mask-restrict="reject" name="fax" id="fax">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Law Office</label>
+                                    <select chosen  data-allow_single_deselect="true" data-placeholder="-- Select a Law Office --" ng-model="Attorney.requesting_office_id"
+                                            ng-options="obj.id as obj.name for obj in lawoffices" style="width: 100%;">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Email</label>
+                                    <input type="email" class="form-control input-sm" ng-model="Attorney.email" name="email" id="email">
+                                    <p class="help-block">Formatted as username@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div> <!-- END OF REFERRALS -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                <a href="#/lawoffices" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

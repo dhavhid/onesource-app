@@ -1,0 +1,93 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/insurancecompanies">Insurance Companies</a></li>
+                <li class="active"><strong>{{Insurance.name}}</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md12 col-sm-12 col-xs-12">
+            <a href="#/insurancecompanies" class="btn btn-primary btn-sm">Close</a>
+            <a href="#/insurancecompanies/{{Insurance.id}}/edit" class="btn btn-warning btn-sm">Edit</a>
+            <button class="btn btn-success btn-sm" ng-print print-element-id="printContent">Print</button>
+        </div>
+    </div>
+    <br />
+    <div id="printContent">
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- NAME -->
+            <tr>
+                <th colspan="3" class="header">INSURANCE COMPANY NAME</th>
+            </tr>
+            <tr>
+                <td colspan="3">{{Insurance.name | uppercase}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- LawOffice INFO -->
+            <tr>
+                <th colspan="3" class="header">CONTACT INFORMATION</th>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <th>Alt. Phone</th>
+                <th>Contact</th>
+            </tr>
+            <tr>
+                <td>{{Insurance.phone}}</td>
+                <td>{{Insurance.alt_phone}}</td>
+                <td>{{Insurance.contact}}</td>
+            </tr>
+            <tr>
+                <th>Fax</th>
+                <th colspan="2">Email</th>
+            </tr>
+            <tr>
+                <td>{{Insurance.fax}}</td>
+                <td colspan="2">{{Insurance.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- CLIENT -->
+            <tr>
+                <th colspan="3" class="header">ADRESS</th>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <th>City</th>
+                <th>Zipcode</th>
+            </tr>
+            <tr>
+                <td>{{Insurance.address1}}, {{Insurance.address2}}</td>
+                <td>{{Insurance.city}}</td>
+                <td>{{Insurance.zipcode}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- CLIENT -->
+            <tr>
+                <th colspan="3" class="header">INSURANCE COMPANY INFO</th>
+            </tr>
+            <tr>
+                <th>Instructions</th>
+            </tr>
+            <tr>
+                <td>
+                    <div ng-bind-html="Insurance.notes"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

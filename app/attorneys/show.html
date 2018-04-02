@@ -1,0 +1,62 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/attorneys">Attornyes</a></li>
+                <li class="active"><strong>{{Attorney.name}}</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md12 col-sm-12 col-xs-12">
+            <a href="#/attorneys" class="btn btn-primary btn-sm">Close</a>
+            <a href="#/attorneys/{{Attorney.id}}/edit" class="btn btn-warning btn-sm">Edit</a>
+            <button class="btn btn-success btn-sm" ng-print print-element-id="printContent">Print</button>
+        </div>
+    </div>
+    <br />
+    <div id="printContent">
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- NAME -->
+            <tr>
+                <th colspan="3" class="header">ATTORNEY NAME</th>
+            </tr>
+            <tr>
+                <td colspan="3">{{Attorney.name | uppercase}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-report">
+            <tbody>
+            <!-- LawOffice INFO -->
+            <tr>
+                <th colspan="3" class="header">CONTACT INFORMATION</th>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <th>Fax</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td>{{Attorney.phone}}</td>
+                <td>{{Attorney.fax}}</td>
+                <td>{{Attorney.email}}</td>
+            </tr>
+            <tr>
+                <th colspan="3">Law Office</th>
+            </tr>
+            <tr>
+                <td colspan="3">{{Attorney.lawoffice.name}}<br />
+                    {{Attorney.lawoffice.address1}}, {{Attorney.lawoffice.address2}}, {{Attorney.lawoffice.city}}, {{Attorney.lawoffice.zipcode}}<br />
+                    {{Attorney.lawoffice.phone}} / {{Attorney.lawoffice.fax}}<br />
+                    {{Attorney.lawoffice.contact}}<br />
+                    {{Attorney.lawoffice.email}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

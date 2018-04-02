@@ -1,0 +1,125 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/users">Users</a></li>
+                <li><a href="#/users/{{User.id}}">{{User.name}}</a></li>
+                <li class="active"><strong>Edit</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-info" role="alert">
+                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+            </div>
+        </div>
+    </div>
+    <form name="userForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> User Information</legend>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(userForm.name)">
+                                    <label class="control-label">Name <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="User.name" name="name" id="name">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(userForm.email)">
+                                    <label class="control-label">Email <span>*</span></label>
+                                    <input type="email" class="form-control input-sm" ng-model="User.email" name="email" id="email">
+                                    <p class="help-block">Formatted as username@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Account Expiration</legend>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">This account expires at<strong ng-if="User.expiration">: {{User.expiration | date: "MMM dd, yyyy"}}</strong></label>
+                                    <select chosen ng-options="obj.value as obj.text for obj in expiration_options" data-placeholder="change to" name="expiration" id="expiration" ng-model="User.expiration">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> User Credentials</legend>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(userForm.password)">
+                                    <label>Password</label>
+                                    <input type="password" ng-minlength="5" ng-maxlength="16" class="form-control input-sm" ng-model="User.password" name="password" id="password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="is_admin" name="is_admin" ng-model="User.is_admin" value="1"> This user is admin
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" id="no_admin" name="is_admin" ng-model="User.is_admin" value="0"> Select access to modules
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="User.is_admin == 0">
+                            <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                <div class="form-group form-group-sm">
+                                    <label>Grant access to any of these modules <span>*</span></label>
+                                    <table class="table table-hover table-striped table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th>Module</th>
+                                            <th>Read Only Access</th>
+                                            <th>Read & Write Access</th>
+                                            <th>No Access</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="rol in roles">
+                                            <td>{{rol.name}}</td>
+                                            <td><input type="radio" name="module_{{$index}}" ng-value="0" ng-model="User.roles[$index].write"></td>
+                                            <td><input type="radio" name="module_{{$index}}" ng-value="1" ng-model="User.roles[$index].write"></td>
+                                            <td><input type="radio" name="module_{{$index}}" value="3" ng-value="3" ng-model="User.roles[$index].write"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="help-block">Please select at least one option.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div> <!-- END OF REFERRALS -->
+        <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                <a href="#/users" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

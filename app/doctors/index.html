@@ -1,0 +1,73 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="javascript:void(0);">Doctors</a></li>
+                <li class="active"><strong>All</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" class="form-control input-sm" placeholder="Search" ng-model="q" ng-change="search()">
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <a href="#/doctors/create" class="btn btn-primary btn-sm pull-right">+ New Record</a>
+            <button class="btn btn-success btn-sm pull-right" ng-print print-element-id="printContent"><i class="fa fa-print"></i> Print</button>
+            <delete-selected collection="doctors"></delete-selected>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-responsive" id="printContent">
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th colspan="10">
+                            <span class="text-success">Showing results<span ng-show="checkSearch()"> for <strong>&quot;{{q}}&quot;</strong></span>: {{pagination.from | number: 0}} &mdash; {{pagination.to | number: 0}} of {{pagination.total | number: 0}}</span>
+                            <span class="text-success pull-right">Page {{pagination.current_page}} of {{pagination.last_page | number: 0}}</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th width="5%" style="text-align:center !important;"><check-all></check-all></th>
+                        <th width="5%"></th>
+                        <th width="5%">ID#</th>
+                        <th width="35%">Name</th>
+                        <th width="20%">Phone</th>
+                        <th width="15%">Fax</th>
+                        <th width="15%">Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="doctor in doctors">
+                        <td align="center"><input type="checkbox" class="allchks" value="{{doctor.id}}"></td>
+                        <td align="center">
+                            <a href="#/doctors/{{doctor.id}}"><i class="fa fa-eye"></i></a>
+                        </td>
+                        <td>{{doctor.id}}</td>
+                        <td><a href="#/doctors/{{doctor.id}}"><strong>{{doctor.name}}</strong></a></td>
+                        <td>{{doctor.phone}}</td>
+                        <td>{{doctor.fax}}</td>
+                        <td>{{doctor.email}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="pagination.last_page > 1">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <li><a ng-click="firstPage()">First</a></li>
+                    <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                    <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                    <li><a ng-click="lastPage()">Last</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

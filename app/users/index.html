@@ -1,0 +1,103 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="javascript:void(0);">Users</a></li>
+                <li class="active"><strong>All</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 col-sm-9 col-xs-12">
+            <input type="text" class="form-control input-sm" placeholder="Search" ng-model="q" ng-change="search()">
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <a href="#/users/create" class="btn btn-primary btn-sm pull-right">+ New Record</a>
+            <button class="btn btn-success btn-sm pull-right" ng-print print-element-id="printContent"><i class="fa fa-print"></i> Print</button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-responsive" id="printContent">
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th colspan="10">
+                            <span class="text-success">Showing results<span ng-show="checkSearch()"> for <strong>&quot;{{q}}&quot;</strong></span>: {{pagination.from | number: 0}} &mdash; {{pagination.to | number: 0}} of {{pagination.total | number: 0}}</span>
+                            <span class="text-success pull-right">Page {{pagination.current_page}} of {{pagination.last_page | number: 0}}</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th width="10%"></th>
+                        <!--<th width="5%">ID#</th>-->
+                        <th width="30%">Name</th>
+                        <th width="30%">Email</th>
+                        <th width="10%">is Admin</th>
+                        <th width="20%">Last Visited</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in users">
+                        <td align="center">
+                            <a href="#/users/{{user.id}}"><i class="fa fa-eye"></i></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="javascript:void(0);" ng-click="writeMail(user.id, user.name)"><i class="fa fa-envelope"></i></a>
+                        </td>
+                        <!--<td>{{user.id}}</td>-->
+                        <td><a href="#/users/{{user.id}}"><strong>{{user.name}}</strong></a></td>
+                        <td>{{user.email}}</td>
+                        <td align="center">
+                            <span ng-if="user.is_admin == 1">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </td>
+                        <td>{{user.last_seen}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="pagination.last_page > 1">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <li><a ng-click="firstPage()">First</a></li>
+                    <li><a ng-click="prevPage()">&larr; Prev</a></li>
+                    <li><a ng-click="nextPage()">Next &rarr;</a></li>
+                    <li><a ng-click="lastPage()">Last</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- ******************************************************************* -->
+<div class="modal fade" id="email_template">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="mailForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Email <em>{{recepient}}</em></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <summernote config="summernoteoptions" height="150" ng-model="Mail.message"></summernote>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <button type="button" id="btn_sendmail" ng-click="sendMail()" class="btn btn-primary btn-sm pull-right">Send</button>
+                            <button type="button" class="btn btn-default btn-sm pull-right" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

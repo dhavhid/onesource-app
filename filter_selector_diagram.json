@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "name": "Monthly appts. by clinic",
+  "description": "Nothing yet to describe",
+  "description_on_report_page": 0,
+  "report_sharing": "1",
+  "access": ["common"],
+  "columns": ["firstname","lastname","..."],
+  "filters":
+  {
+    "match": "OR|AND",
+    "fields": [
+      {
+        "field": "firstname",
+        "value": "david"
+      },
+      {
+        "lastname": "martinez"
+      }
+    ]
+  },
+  "sort":
+  [
+    {
+      "field": "firstname",
+      "order": "asc"
+    },
+    {
+      "field": "lastname",
+      "order": "desc"
+    }
+  ],
+  "group": {
+    "field": "lastname",
+    "group_type": "equal"
+  }
+}

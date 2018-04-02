@@ -1,0 +1,134 @@
+<br />
+<div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#/reports">OneSource Scheduling</a></li>
+                <li><a href="#/clinics">Clinics</a></li>
+                <li><a href="#/clinics/{{Clinic.id}}">{{Clinic.name}}</a></li>
+                <li class="active"><strong>Edit</strong></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-info" role="alert">
+                Please fill in all fields in the following form. Those fields marked with an <span>*</span> are required.
+            </div>
+        </div>
+    </div>
+    <form name="clinicForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Contact Information</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clinicForm.name)">
+                                    <label class="control-label">Name <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Clinic.name" name="name" id="name">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Phone</label>
+                                    <input type="text" class="form-control input-sm" ng-model="Clinic.phone" mask="(999) 999-9999" mask-restrict="reject" name="phone" id="phone">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Alt. Phone</label>
+                                    <input type="text" class="form-control input-sm" ng-model="Clinic.alt_phone" mask="(999) 999-9999" mask-restrict="reject" name="alt_phone" id="alt_phone">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clinicForm.contact)">
+                                    <label>Contact <span>*</span></label>
+                                    <input type="text" required class="form-control input-sm" ng-model="Clinic.contact" name="contact" id="contact">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label>Fax</label>
+                                    <input type="text"class="form-control input-sm" ng-model="Clinic.fax" mask="(999) 999-9999" mask-restrict="reject" name="fax" id="fax">
+                                    <p class="help-block">Formatted as (999) 999 - 0000</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Email</label>
+                                    <input type="email" class="form-control input-sm" ng-model="Clinic.email" name="email" id="email">
+                                    <p class="help-block">Formatted as username@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div> <!-- END OF REFERRALS -->
+        <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Address</legend>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <label class="control-label">Address</label>
+                                    <input type="text" class="form-control" ng-model="Clinic.address1" name="address1" id="address1" placeholder="Street 1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group input-group-sm">
+                                    <input type="text" class="form-control" ng-model="Clinic.address2" name="address2" id="address2" placeholder="Street 2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clinicForm.city)">
+                                    <label class="control-label">City <span>*</span></label>
+                                    <input type="text" name="city" ng-model="Clinic.city" class="form-control input-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group input-group-sm" ng-class="getFormFieldClass(clinicForm.zipcode)">
+                                    <label class="control-label">Zipcode <span>*</span></label>
+                                    <input type="number" required ng-minlength="5" ng-maxlength="5" ng-model="Clinic.zipcode" name="zipcode" id="zipcode" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="well">
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Notes</legend>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <summernote height="100" config="summernoteoptions" ng-model="Clinic.notes"></summernote>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="button" id="submit-button" value="Save" class="btn btn-primary btn-sm" ng-click="submitForm()">
+                <a href="#/clinics" class="btn btn-default btn-sm">Close</a>
+            </div>
+        </div>
+    </form>
+</div>
